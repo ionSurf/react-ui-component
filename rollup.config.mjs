@@ -2,6 +2,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
+import postcss from 'rollup-plugin-postcss'
 import { readFileSync } from 'node:fs';
 
 const packageJson = JSON.parse(
@@ -23,11 +24,12 @@ export default [
         sourcemap: true
       }
     ],
-    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' })]
+    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), postcss()]
   },
   {
     input: 'dist/esm/types/index.d.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    plugins: [dts()]
+    plugins: [dts()],
+    external: [/\.css$/]
   }
 ];
